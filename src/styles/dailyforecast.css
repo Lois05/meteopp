@@ -1,0 +1,77 @@
+.daily-forecast-container {
+  margin-top: 30px;
+  width: 100%;
+}
+
+.daily-forecast-title {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: white;
+  opacity: 0.9;
+}
+
+.daily-forecast {
+  display: flex;
+  justify-content: space-between; /* Pour bien répartir les 7 jours */
+  gap: 12px;
+}
+
+.daily-forecast-card {
+  background: #2b2d42; /* Couleur des cartes sur la photo */
+  border-radius: 16px;
+  flex: 1; /* Les cartes s'adaptent à la largeur */
+  height: 145px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 10px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* État Actif (Sélectionné) */
+.daily-forecast-card.active {
+  background: #3b3d5a; 
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* --- ÉLÉMENTS INTERNES --- */
+.daily-forecast-card .day {
+  font-size: 14px;
+  font-weight: 500;
+  color: #a0a0c0;
+}
+
+.daily-forecast-card .weather-icon {
+  width: 45px; 
+  height: 45px;
+  object-fit: contain;
+}
+
+.temp-range {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.temp-range .max {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.temp-range .min {
+  font-size: 13px;
+  color: #a0a0c0;
+}
+
+/*  STYLE SKELETON (PHOTO LOADING) --- */
+.daily-forecast-card.skeleton-loading {
+  background-color: #222338 !important; /* Couleur sombre unie de l'image */
+  border: none;
+  cursor: default;
+}

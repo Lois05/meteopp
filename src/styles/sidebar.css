@@ -1,0 +1,122 @@
+/* --- CONTAINER PRINCIPAL --- */
+.side-bar {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  background-color: #1a1b2e; 
+  border-radius: 20px;
+  width: 100%; /* Ajusté à 100% pour le parent sidebar */
+  height: 675px;
+  box-sizing: border-box;
+}
+
+/* --- LIGNE DU HAUT --- */
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.text { 
+  font-size: 16px; 
+  font-weight: 500; 
+  color: #ffffff; 
+}
+
+/* --- DROPDOWN --- */
+.dropdown { position: relative; }
+
+.dropdown-btn {
+  background: #2b2d42;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: 0.2s;
+}
+
+.dropdown-btn:hover { background: #363954; }
+
+.dropdown-menu {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  z-index: 100;
+  width: 160px;
+  background: #2b2d42;
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.item { 
+  padding: 10px; 
+  font-size: 13px; 
+  color: #a0a0c0; 
+  cursor: pointer; 
+  border-radius: 8px; 
+}
+.item:hover, .item.active { 
+  background: rgba(255, 255, 255, 0.1); 
+  color: #fff; 
+}
+
+/* --- LISTE DES CARTES --- */
+.all-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; 
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none; /* Masquer scrollbar Firefox */
+}
+.all-cards::-webkit-scrollbar { display: none; } /* Masquer scrollbar Chrome/Safari *
+
+/* --- HOUR CARD --- */
+.hour-card {
+  background-color: #2b2d42; 
+  border-radius: 16px;
+  padding: 0 20px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 60px; 
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.left-info { 
+  display: flex; 
+  align-items: center; 
+  gap: 15px; 
+}
+
+.hour-card .weather-icon {
+  width: 40px; 
+  height: 40px;
+  object-fit: contain;
+}
+
+.time { font-size: 14px; font-weight: 500; }
+.temperature { font-size: 18px; font-weight: 700; }
+
+/* --- SKELETON STATE --- */
+.skeleton-card {
+  background: linear-gradient(90deg, #222338 25%, #2b2d42 50%, #222338 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border: none;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}

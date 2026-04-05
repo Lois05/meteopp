@@ -1,0 +1,135 @@
+/* --- SECTION RECHERCHE --- */
+.search-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.first-texte {
+  font-family: 'Bricolage', sans-serif;
+  font-size: 44px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #e6e0e0;
+}
+
+/* Container principal */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 550px;
+  position: relative; /* Important pour que les suggestions se placent par rapport à lui */
+}
+
+/* Wrapper pour l’input */
+.input-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+/* Input */
+.search-input {
+  width: 100%;
+  padding: 15px 15px 15px 50px; /* Plus d'espace pour l'icône */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  font-size: 16px;
+  background-color: #1a1b2e; /* Harmonisé avec ton thème sombre */
+  color: white;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  border-color: hsl(246, 81%, 61%);
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Icône dans l’input */
+.search-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Bouton Search */
+.search-button {
+  background-color: hsl(246, 81%, 61%);
+  border: none;
+  border-radius: 12px;
+  padding: 15px 25px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.search-button:hover {
+  background-color: hsl(233, 79%, 45%);
+  transform: translateY(-1px);
+}
+
+/* --- LISTE DES SUGGESTIONS (AJOUTÉ) --- */
+.suggestions-list {
+  position: absolute;
+  top: calc(100% + 8px); /* Apparaît juste en dessous de l'input */
+  left: 0;
+  width: 100%;
+  background: #1a1b2e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  list-style: none;
+  padding: 8px;
+  margin: 0;
+  z-index: 1000; /* Passe au-dessus de tout */
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.suggestions-list li {
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.suggestions-list li:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.suggestions-list .city-name {
+  font-weight: 600;
+}
+
+.suggestions-list .country-name {
+  opacity: 0.5;
+  margin-left: 4px;
+}
+
+/* État "Search in progress" */
+.loading-state {
+  padding: 15px;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+}
