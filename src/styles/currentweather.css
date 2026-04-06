@@ -1,69 +1,110 @@
 .current-weather {
   width: 100%;
-  height: 280px; 
-  border-radius: 15px;
+  height: 280px;
+  border-radius: 20px;
   color: white;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  padding: 40px;
   background-size: cover;
   background-position: center;
   position: relative;
-  transition: all 0.3s ease;
-  overflow: hidden; /* Sécurité pour le débordement */
+  overflow: hidden;
+  display: flex;
+  align-items: center; /* Centre verticalement le contenu global */
 }
 
 .current-weather::before {
   content: "";
   position: absolute;
-  top:0; left:0; width:100%; height:100%;
-  background: rgba(0,0,0,0.3);
-  border-radius:15px;
-  z-index:0;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(90deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%);
+  z-index: 0;
 }
 
-.current-weather > * {
+.current-content-wrapper {
   position: relative;
-  z-index:1;
-}
-
-.top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  z-index: 1;
   width: 100%;
-}
-
-.top-left {
   display: flex;
-  flex-direction: column-reverse; 
-  gap: 5px; 
+  justify-content: space-between; /* Écarte les éléments sur PC */
+  align-items: center;
 }
 
-.city, .comma, .country {
-  font-size: 24px;
-  font-weight: bold;
+/* --- TEXTE GAUCHE (PC) --- */
+.location-info {
+  text-align: left;
 }
 
-.weather-icon { width:80px; height:80px; object-fit: contain; }
-.temp { font-size: 84px; font-weight: bold; }
+.city-country-wrapper {
+  font-size: 32px;
+  font-weight: 700;
+  display: flex;
+  gap: 6px;
+}
 
-/* --- CORRECTIF RESPONSIVE CURRENT --- */
-@media (max-width: 600px) {
+.full-date {
+  font-size: 18px;
+  opacity: 0.8;
+  margin-top: 8px;
+}
+
+/* --- TEMP DROITE (PC) --- */
+.weather-main-display {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.weather-icon {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.temp {
+  font-size: 96px;
+  font-weight: 800;
+}
+
+/* =============================================
+   MOBILE DESIGN (MATCH PHOTO 2)
+   ============================================= */
+@media (max-width: 768px) {
   .current-weather {
-    height: auto;
-    min-height: 220px;
-    padding: 15px;
+    height: 320px;
+    padding: 20px;
+    justify-content: center;
   }
-  .temp { 
-    font-size: 52px !important; /* Réduit pour ne pas déborder */
+
+  .current-weather::before {
+    background: rgba(0, 0, 0, 0.3); /* Overlay plus uniforme sur mobile */
   }
-  .city, .country {
-    font-size: 20px !important;
+
+  .current-content-wrapper {
+    flex-direction: column; /* Empile les éléments */
+    justify-content: center;
+    gap: 30px;
   }
+
+  .location-info {
+    text-align: center; /* Centre le texte comme sur la Photo 2 */
+  }
+
+  .city-country-wrapper {
+    font-size: 26px;
+    justify-content: center;
+  }
+
+  .weather-main-display {
+    flex-direction: row; /* Icône et Temp restent côte à côte */
+    justify-content: center;
+  }
+
+  .temp {
+    font-size: 72px !important;
+  }
+
   .weather-icon {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
   }
 }

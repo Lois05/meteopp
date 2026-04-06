@@ -1,4 +1,3 @@
-
 .daily-forecast-container {
   margin-top: 30px;
   width: 100%;
@@ -12,16 +11,17 @@
   opacity: 0.9;
 }
 
+/* --- ÉTAT PC (PHOTO 1) --- */
 .daily-forecast {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between; /* Aligne les 7 jours sur une ligne */
   gap: 12px;
 }
 
 .daily-forecast-card {
   background: #2b2d42; 
   border-radius: 16px;
-  flex: 1; 
+  flex: 1; /* Les cartes se partagent l'espace équitablement */
   height: 135px;
   display: flex;
   flex-direction: column;
@@ -51,18 +51,16 @@
   object-fit: contain;
 }
 
-/* --- MODIFICATION ICI POUR L'ALIGNEMENT HORIZONTAL --- */
 .temp-range {
   display: flex;
-  flex-direction: row; /* Aligne sur la même ligne */
+  flex-direction: row; 
   align-items: center;
-  gap: 8px; /* Espace entre le max et le min */
+  gap: 8px; 
 }
 
 .temp-range .max {
   font-size: 15px;
   font-weight: 600;
-  color: white;
 }
 
 .temp-range .min {
@@ -70,28 +68,37 @@
   color: #a0a0c0;
 }
 
-.daily-forecast-card.skeleton-loading {
-  background-color: #222338 !important; 
-  border: none;
-  cursor: default;
-}
-
-/* --- CORRECTIF RESPONSIVE --- */
-@media (max-width: 850px) {
+/* =============================================
+   ÉTAT MOBILE (PHOTO 2 : GRILLE 3 COLONNES)
+   ============================================= */
+@media (max-width: 768px) {
   .daily-forecast {
-    overflow-x: auto;
-    justify-content: flex-start;
-    padding-bottom: 15px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-
-  .daily-forecast::-webkit-scrollbar {
-    display: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes comme sur la photo */
+    gap: 10px;
   }
 
   .daily-forecast-card {
-    flex: 0 0 105px;
-    min-width: 105px;
+    flex: none; /* Désactive le comportement flex pour la grille */
+    width: 100%;
+    height: 130px;
+    padding: 15px 5px;
   }
+
+  /* Pour que le 7ème jour (Lundi) ne crée pas de trou vide gênant */
+  .daily-forecast-card:last-child {
+    grid-column: span 1; 
+  }
+
+  .daily-forecast-card .weather-icon {
+    width: 35px;
+    height: 35px;
+  }
+
+  .temp-range {
+    gap: 5px;
+  }
+
+  .temp-range .max { font-size: 14px; }
+  .temp-range .min { font-size: 11px; }
 }
