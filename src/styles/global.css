@@ -39,7 +39,7 @@ body {
 .main-left { flex: 2; display: flex; flex-direction: column; gap: 30px; min-width: 0; }
 .sidebar { flex: 1; min-width: 300px; }
 
-/* --- 3. RECHERCHE & TITRE --- */
+/* --- 3. RECHERCHE --- */
 .search-section { padding: 40px 0; text-align: center; }
 .first-texte { 
   font-family: 'Bricolage', sans-serif; 
@@ -55,39 +55,11 @@ body {
   max-width: 550px; 
   margin: 0 auto; 
   width: 100%; 
-  position: relative;
 }
 
-.search-input {
-  flex: 1;
-  padding: 15px 15px 15px 45px;
-  border-radius: 12px;
-  background: #1a1b2e;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: white;
-  font-size: 16px;
-  outline: none;
-  transition: all 0.2s;
-}
-
-.search-input:focus {
-  border-color: white;
-  box-shadow: 0 0 0 1px white;
-}
-
-.search-button {
-  background: #4f63ff;
-  color: white;
-  border: none;
-  padding: 0 25px;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-/* --- 4. MENU UNITS --- */
+/* --- 4. MENU UNITS (LE DROPDOWN DE LA PHOTO) --- */
 .settings-wrapper { position: relative; }
+
 .settings-btn {
   display: flex;
   align-items: center;
@@ -98,22 +70,83 @@ body {
   cursor: pointer;
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: white;
+  font-size: 14px;
+  transition: all 0.2s;
 }
+
+.settings-btn:hover, .settings-btn.active-focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.unit-icon-main { width: 18px; opacity: 0.8; }
+.dropdown-icon-img { width: 12px; transition: transform 0.3s; }
+.dropdown-icon-img.up { transform: rotate(180deg); }
 
 .settings-dropdown {
   position: absolute;
   top: calc(100% + 12px);
   right: 0;
   width: 240px;
-  background-color: #1a1b2e;
+  background-color: #1a1b2e; /* Fond sombre comme la photo */
   border-radius: 20px;
   padding: 16px;
   z-index: 10000;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(15px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(15px); /* Effet de flou derrière */
+  animation: slideIn 0.2s ease-out;
 }
 
-/* --- 6. RESPONSIVE PHOTO MATCH --- */
+.dropdown-section .section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  padding: 4px 12px 10px 12px;
+}
+
+.divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin-bottom: 12px;
+}
+
+.dropdown-section .label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4); /* Gris clair comme la photo */
+  letter-spacing: 1px;
+  margin: 15px 12px 8px 12px;
+}
+
+.option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  transition: 0.2s;
+}
+
+.option:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+
+.option.active {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+
+.checkmark {
+  width: 14px;
+  filter: brightness(2); /* Rend le checkmark bien blanc */
+}
+
+/* --- 5. RESPONSIVE --- */
 @media (max-width: 950px) {
   .main-content { flex-direction: column; }
   .sidebar { width: 100%; min-width: unset; }
@@ -123,19 +156,13 @@ body {
   .header-content { padding: 15px 0; }
   .logo { height: 22px; }
   
-  .first-texte { 
-    font-size: 38px !important; 
-    margin-bottom: 25px;
-  }
+  .first-texte { font-size: 38px !important; margin-bottom: 25px; }
 
-  .search-bar { 
-    flex-direction: column; /* PHOTO: Input au dessus du bouton */
-    gap: 12px; 
-  }
+  .search-bar { flex-direction: column; gap: 12px; }
+  .search-button { width: 100%; padding: 16px; font-size: 16px; }
+}
 
-  .search-button { 
-    width: 100%; /* PHOTO: Bouton large */
-    padding: 16px;
-    font-size: 16px;
-  }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

@@ -4,30 +4,66 @@
   gap: 20px;
   margin-top: 15px;
   margin-bottom: 20px;
-  width: 98%;
-  height: 98px; 
+  width: 100%; /* Ajusté à 100% pour remplir le conteneur parent */
 }
 
 .detail-card {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 10px;
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08); /* Plus subtil comme sur la photo */
+  padding: 20px 15px; /* Plus de padding vertical pour plus de hauteur */
+  border-radius: 16px; /* Arrondi plus doux pour matcher le design */
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start; /* Aligné à gauche comme sur tes photos */
   color: #fff;
-  gap: 8px;
+  gap: 12px; /* Plus d'espace entre le titre et la valeur */
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.card-title { font-size: 13px; opacity: 0.7; }
-.card-value { font-size: 18px; font-weight: 700; }
-.unit-text { font-size: 12px; opacity: 0.6; }
+.card-title { 
+  font-size: 14px; 
+  opacity: 0.7; 
+  font-weight: 400;
+}
 
-/* --- 🧊 STYLE SKELETON (PHOTO) --- */
+.card-value { 
+  font-size: 24px; /* Plus grand pour la lisibilité */
+  font-weight: 600; 
+}
+
+.unit-text { 
+  font-size: 14px; 
+  opacity: 0.6; 
+  margin-left: 4px;
+  font-weight: 400;
+}
+
+/* --- 🧊 STYLE SKELETON --- */
 .weather-details.skeleton-state .detail-card.skeleton-card {
-  background-color: #1a1b2e !important; /* Même couleur que le chargement CurrentWeather */
+  background-color: #1a1b2e !important;
   border: none;
+}
+
+/* =============================================
+   ÉTAT MOBILE (PHOTO 2 : GRILLE 2x2)
+   ============================================= */
+@media (max-width: 768px) {
+  .weather-details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* PHOTO: 2 colonnes x 2 lignes */
+    gap: 15px;
+    height: auto; /* La hauteur s'adapte au contenu */
+  }
+
+  .detail-card {
+    flex: none;
+    width: 100%;
+    height: 110px; /* Hauteur fixe pour garder des carrés propres */
+    padding: 15px;
+  }
+
+  .card-value {
+    font-size: 20px;
+  }
 }

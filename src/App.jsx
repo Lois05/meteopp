@@ -13,7 +13,7 @@ import checkmark from "./assets/images/icon-checkmark.svg";
 import bgImage from "./assets/images/bg-today-large.svg";
 import errorIcon from "./assets/images/icon-error.svg";
 import retryIcon from "./assets/images/icon-retry.svg";
-import dropdown from "./assets/images/icon-dropdown.svg"; // Ton icône SVG
+import dropdown from "./assets/images/icon-dropdown.svg";
 
 // Icônes Météo WebP
 import sunnyIcon from "./assets/images/icon-sunny.webp";
@@ -25,12 +25,25 @@ import rain from "./assets/images/icon-rain.webp";
 import snow from "./assets/images/icon-snow.webp";
 import storm from "./assets/images/icon-storm.webp";
 
+// --- FONCTIONS DE CONVERSION (Logique dynamique) ---
+const convertTemp = (temp, unit) => {
+  if (!temp && temp !== 0) return null;
+  if (unit.includes("Fahrenheit")) return Math.round((temp * 9) / 5 + 32);
+  return Math.round(temp);
+};
+
+const convertWind = (speed, unit) => {
+  if (!speed && speed !== 0) return null;
+  if (unit === "mph") return Math.round(speed * 0.621371);
+  return Math.round(speed);
+};
+
 function App() {
   const [weatherData, setWeatherData] = useState(null);
   const [selectedDayIndex, setSelectedDayIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false); // Erreur API (Photo 2)
-  const [hasNoResults, setHasNoResults] = useState(false); // Ville non trouvée (Photo 4)
+  const [hasError, setHasError] = useState(false);
+  const [hasNoResults, setHasNoResults] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const settingsRef = useRef(null);
 
@@ -68,7 +81,6 @@ function App() {
     setHasNoResults(false);
 
     try {
-      // 1. Géocodage
       const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`);
       const geoData = await geoRes.json();
       
@@ -80,7 +92,6 @@ function App() {
 
       const { latitude, longitude, name, country } = geoData.results[0];
 
-      // 2. Météo
       const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,wind_speed_10m,weather_code&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`);
       const data = await res.json();
 
@@ -89,7 +100,7 @@ function App() {
         return {
           dayName: new Date(dateStr).toLocaleDateString("en-US", { weekday: "long" }),
           shortDay: new Date(dateStr).toLocaleDateString("en-US", { weekday: "short" }),
-          max: data.daily.temperature_2m_max[i],
+          max: data.daily.temperature_2m_max[i], // On stocke la valeur brute (Metric)
           min: data.daily.temperature_2m_min[i],
           icon: getWeatherIcon(data.daily.weather_code[i]),
           hourly: data.hourly.time.slice(startHour, startHour + 24).map((t, idx) => ({
@@ -123,7 +134,6 @@ function App() {
 
   useEffect(() => { fetchWeather("Cotonou"); }, []);
 
-  
   if (hasError) {
     return (
       <div className="full-error-screen">
@@ -143,6 +153,26 @@ function App() {
       </div>
     );
   }
+
+  // --- PRÉPARATION DES DONNÉES DYNAMIQUES ---
+  const displayedWeather = weatherData ? {
+    ...weatherData,
+    current: {
+      ...weatherData.current,
+      temp: convertTemp(weatherData.current.temp, units.temp),
+      feelsLike: convertTemp(weatherData.current.feelsLike, units.temp),
+      wind: convertWind(weatherData.current.wind, units.wind)
+    },
+    days: weatherData.days.map(day => ({
+      ...day,
+      max: convertTemp(day.max, units.temp),
+      min: convertTemp(day.min, units.temp),
+      hourly: day.hourly.map(h => ({
+        ...h,
+        temp: convertTemp(h.temp, units.temp)
+      }))
+    }))
+  } : null;
 
   return (
     <div className="app-main-wrapper">
@@ -203,13 +233,26 @@ function App() {
         ) : (
           <>
             <div className="main-left">
-              <CurrentWeather data={weatherData} loading={isLoading} bg={bgImage} />
-              <WeatherDetails data={weatherData?.current} units={units} loading={isLoading} />
-              <DailyForecast days={weatherData?.days} activeIndex={selectedDayIndex} onSelect={setSelectedDayIndex} loading={isLoading} />
+              <CurrentWeather 
+                data={displayedWeather} 
+                loading={isLoading} 
+                bg={bgImage} 
+              />
+              <WeatherDetails 
+                data={displayedWeather?.current} 
+                units={units} 
+                loading={isLoading} 
+              />
+              <DailyForecast 
+                days={displayedWeather?.days} 
+                activeIndex={selectedDayIndex} 
+                onSelect={setSelectedDayIndex} 
+                loading={isLoading} 
+              />
             </div>
             <aside className="sidebar">
               <SideBar 
-                days={weatherData?.days || []} 
+                days={displayedWeather?.days || []} 
                 selectedIndex={selectedDayIndex} 
                 setSelectedIndex={setSelectedDayIndex} 
                 loading={isLoading} 
