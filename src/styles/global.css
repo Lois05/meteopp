@@ -6,414 +6,193 @@
 }
 
 body {
-  /* On garde Google Fonts pour DM Sans (chargé dans index.html) */
   font-family: 'DM Sans', sans-serif;
   background-color: #05051e;
   color: white;
   min-height: 100vh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-/* --- 2. HEADER & LAYOUT --- */
-.app-header {
-  width: 100%;
-  padding: 20px 0;
+/* --- 2. LAYOUT --- */
+.app-main-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 40px 20px;
 }
 
 .header-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 30px 0;
 }
 
 .logo { height: 32px; }
 
 .main-content {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
   display: flex;
   gap: 30px;
+  margin-top: 20px;
 }
 
-.main-left { flex: 2; display: flex; flex-direction: column; gap: 25px; }
-.sidebar { flex: 1; }
+.main-left { flex: 2; display: flex; flex-direction: column; gap: 30px; min-width: 0; }
+.sidebar { flex: 1; min-width: 300px; }
 
-/* --- 3. RECHERCHE & SUGGESTIONS --- */
-.search-section {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px;
-}
-
-.first-texte {
-  font-family: 'Bricolage', sans-serif; /* Assure-toi que Bricolage est importé ou défini */
-  font-size: 48px;
-  text-align: center;
+/* --- 3. RECHERCHE & TITRE --- */
+.search-section { padding: 40px 0; text-align: center; }
+.first-texte { 
+  font-family: 'Bricolage', sans-serif; 
+  font-size: 48px; 
   margin-bottom: 30px;
-  color: #ffffff;
+  line-height: 1.2;
 }
 
 .search-bar { 
   display: flex; 
-  align-items: center; 
   gap: 12px; 
-  width: 100%; 
   max-width: 550px; 
+  margin: 0 auto; 
+  width: 100%; 
   position: relative;
 }
-
-.input-wrapper { position: relative; flex: 1; }
 
 .search-input {
-  width: 100%;
-  padding: 15px 15px 15px 50px;
+  flex: 1;
+  padding: 15px 15px 15px 45px;
   border-radius: 12px;
-  background-color: #1a1b2e;
+  background: #1a1b2e;
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: white;
-  outline: none;
   font-size: 16px;
+  outline: none;
+  transition: all 0.2s;
 }
 
-.search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); width: 18px; opacity: 0.5; }
+.search-input:focus {
+  border-color: white;
+  box-shadow: 0 0 0 1px white;
+}
 
 .search-button {
-  background-color: #4f63ff;
+  background: #4f63ff;
+  color: white;
   border: none;
+  padding: 0 25px;
   border-radius: 12px;
-  padding: 15px 25px;
-  color: white;
-  cursor: pointer;
   font-weight: 600;
+  cursor: pointer;
   transition: 0.2s;
 }
 
-.suggestions-list {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  width: 100%;
-  background: #1a1b2e;
-  border-radius: 14px;
-  z-index: 9999;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-  backdrop-filter: blur(15px);
-  list-style: none;
-  overflow: hidden;
-}
+.search-button:hover { filter: brightness(1.1); }
 
-.suggestions-list li {
-  padding: 12px 20px;
-  cursor: pointer;
-  font-size: 14px;
-  display: flex;
-  gap: 5px;
-}
+/* --- 4. MENU UNITS (DROPDOWN) --- */
+.settings-wrapper { position: relative; }
 
-.suggestions-list li:hover { background: rgba(79, 99, 255, 0.2); }
-.city-name { font-weight: 600; }
-.country-name { opacity: 0.6; }
-
-/* --- 4. CURRENT WEATHER (Avec ton bgImage) --- */
-.current-weather {
-  width: 100%;
-  min-height: 240px;
-  border-radius: 24px;
-  padding: 40px;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.top { display: flex; justify-content: space-between; align-items: flex-start; }
-.date { font-size: 14px; opacity: 0.8; margin-bottom: 8px; }
-.city { font-size: 32px; font-weight: 800; }
-.country { font-size: 32px; font-weight: 300; opacity: 0.7; }
-
-.top-right { display: flex; align-items: center; gap: 20px; }
-.weather-icon { width: 80px; height: 80px; object-fit: contain; }
-.temp { font-size: 84px; font-weight: 800; line-height: 1; }
-
-/* --- 5. WEATHER DETAILS (Grid) --- */
-.weather-details {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-}
-
-.detail-card {
-  background: #1a1b2e;
-  padding: 20px;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.card-title { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; }
-.card-value { font-size: 24px; font-weight: 700; }
-.unit-text { font-size: 14px; font-weight: 400; opacity: 0.6; }
-
-/* --- 6. SKELETONS & LOADERS --- */
-.skeleton-card {
-  background: linear-gradient(90deg, #1a1b2e 25%, #25273c 50%, #1a1b2e 75%);
-  background-size: 200% 100%;
-  animation: loading 1.5s infinite;
-  min-height: 100px;
-}
-
-@keyframes loading {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-.loading-state {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-}
-
-/* --- 7. ERREUR & RETRY --- */
-.error-container {
-  background: rgba(255, 79, 79, 0.1);
-  border: 1px solid #ff4f4f;
-  border-radius: 20px;
-  padding: 40px;
-  text-align: center;
-}
-
-.error-container img { width: 48px; margin-bottom: 15px; }
-
-/* --- 8. RESPONSIVE --- */
-@media (max-width: 900px) {
-  .main-content { flex-direction: column; }
-  .weather-details { grid-template-columns: repeat(2, 1fr); }
-  .temp { font-size: 60px; }
-  .first-texte { font-size: 32px; }
-}
-
-/* --- FULL ERROR SCREEN (PHOTO 2) --- */
-.full-error-screen {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  background-color: #05051e;
-}
-
-.error-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 20px;
-}
-
-.error-big-icon { width: 64px; margin-bottom: 24px; opacity: 0.8; }
-
-.error-content h1 {
-  font-family: 'Bricolage', sans-serif;
-  font-size: 48px;
-  margin-bottom: 16px;
-}
-
-.error-content p {
-  color: rgba(255, 255, 255, 0.6);
-  max-width: 450px;
-  line-height: 1.5;
-  margin-bottom: 32px;
-}
-
-.retry-btn-large {
-  background: #1a1b2e;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: white;
-  padding: 12px 24px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: 0.2s;
-}
-
-.retry-btn-large:hover { background: #25273c; }
-
-/* --- MENU UNITS (PHOTO 1) --- */
-
-/* Conteneur du bouton et du menu */
-.settings-wrapper {
-  position: relative;
-}
-
-/* Le bouton "Units" dans le header */
 .settings-btn {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(255, 255, 255, 0.08); /* Fond translucide */
+  background: rgba(255, 255, 255, 0.08);
   padding: 10px 18px;
   border-radius: 12px;
   cursor: pointer;
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: white;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
 }
 
-.settings-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.2);
+.settings-btn.active-focus {
+  border-color: white;
+  background: rgba(255, 255, 255, 0.15);
 }
 
-.settings-btn .arrow {
-  font-size: 10px;
-  margin-left: 4px;
-  transition: transform 0.3s ease;
-  opacity: 0.5;
-}
-
-.settings-btn .arrow.up {
-  transform: rotate(180deg);
-}
-
-/* Le panneau déroulant */
 .settings-dropdown {
   position: absolute;
   top: calc(100% + 12px);
   right: 0;
   width: 240px;
-  background-color: #1a1b2e; /* Fond sombre comme sur la photo */
+  background-color: #1a1b2e;
   border-radius: 20px;
   padding: 16px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
   z-index: 10000;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(15px); /* Effet de flou derrière le menu */
+  backdrop-filter: blur(15px);
   animation: slideIn 0.2s ease-out;
 }
 
-/* Sections du menu */
-.section-title {
-  font-size: 15px;
-  font-weight: 600;
-  margin: 4px 8px 12px 8px;
-  color: white;
-}
-
-.divider {
-  height: 1px;
-  background: rgba(255, 255, 255, 0.08);
-  margin: 12px 0;
-}
-
-/* Labels grisés (Temperature, Wind Speed...) */
-.label {
+.dropdown-section .label {
   font-size: 11px;
   text-transform: uppercase;
-  color: rgba(238, 230, 230, 0.4); /* Gris clair comme sur la photo */
+  color: rgba(255, 255, 255, 0.4);
   letter-spacing: 1.2px;
-  margin: 16px 8px 8px 8px;
-  font-weight: 600;
+  margin: 15px 8px 8px 8px;
 }
-
-/* --- OPTION ET CHECKMARK (global.css) --- */
 
 .option {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 12px 14px;
-  border-radius: 12px;
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.8);
+  padding: 10px 12px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: 0.2s;
-  margin-bottom: 2px;
 }
 
-.option:hover {
-  background: rgba(121, 127, 173, 0.15); /* Bleu très léger au survol */
-  color: white;
+.option.active { background: rgba(255, 255, 255, 0.05); }
+.checkmark { width: 14px; }
+
+/* --- 5. LOADING & ERRORS --- */
+.loader-dots span {
+  width: 10px; height: 10px;
+  background: white; border-radius: 50%;
+  animation: pulseDots 1.4s infinite;
 }
 
-/* État actif de l'option */
-.option.active {
-  background: rgba(164, 168, 197, 0.1);
-  color: white; /* Texte blanc si sélectionné */
-  font-weight: 500;
-}
-
-/* L'icône Checkmark du projet (Blanc comme sur la photo) */
-.checkmark {
-  width: 16px;
-  height: 16px;
-  /* On a supprimé le filter ! L'icône du projet s'affiche telle quelle. */
-  object-fit: contain;
-  margin-left: 8px; /* Espacement avec le texte */
-}
-
-/* Petite animation d'entrée */
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* --- FOCUS STATES --- */
-
-/* État focus pour la barre de recherche */
-.search-input:focus {
-  border-color: rgba(247, 242, 242, 0.9);
-  box-shadow: 0 0 0 1px rgba(241, 239, 239, 0.9); /* Renforce l'épaisseur sans bouger le layout */
-  background-color: #1a1b2e;
-}
-
-/* État focus pour le bouton Units quand le menu est ouvert */
-.settings-btn.active-focus {
-  border-color: white;
-  background: rgba(255, 255, 255, 0.12);
-}
-
-/* On applique aussi une bordure au bouton Search au survol/focus pour plus de cohérence */
-.search-button:hover, .search-button:focus {
-  filter: brightness(1.1);
-  box-shadow: 0 0 0 2px rgba(244, 244, 247, 0.829);
-}
-
-/* --- NO RESULTS STATE --- */
-
-.no-results-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 60px 20px;
-  width: 100%;
+@keyframes pulseDots {
+  0%, 80%, 100% { transform: scale(0.7); opacity: 0.3; }
+  40% { transform: scale(1.1); opacity: 1; }
 }
 
 .no-results-text {
   font-family: 'Bricolage', sans-serif;
-  font-size: 24px; /* Ajuste selon tes préférences, environ 24-32px sur la photo */
-  font-weight: 600;
-  color: #ffffff;
+  font-size: 24px;
   text-align: center;
-  letter-spacing: -0.5px;
+  padding: 60px 0;
+}
+
+/* --- 6. RESPONSIVE (POUR TOUT LES ÉCRANS) --- */
+@media (max-width: 950px) {
+  .main-content { flex-direction: column; }
+  .sidebar { width: 100%; min-width: unset; }
+  .first-texte { font-size: 32px; }
+}
+
+@media (max-width: 480px) {
+  .header-content { 
+    padding: 15px 0; /* Un peu moins d'espace vertical */
+    justify-content: space-between; /* Force l'écartement maximum */
+    width: 100%;
+  }
+  
+  .logo { 
+    height: 22px; /* On réduit légèrement pour laisser respirer le bouton Units */
+  }
+  
+  .settings-btn { 
+    padding: 8px 12px; /* On rend le bouton plus compact */
+    font-size: 13px; 
+    gap: 6px;
+  }
+
+  .search-bar { gap: 8px; }
+  .search-button { padding: 0 15px; font-size: 14px; }
+  
+  /* Ajustement pour le titre qui peut être énorme sur mobile */
+  .first-texte { font-size: 28px; padding: 0 10px; }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

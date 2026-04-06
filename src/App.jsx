@@ -123,7 +123,7 @@ function App() {
 
   useEffect(() => { fetchWeather("Cotonou"); }, []);
 
-  // Écran d'erreur complète (Photo 2)
+  
   if (hasError) {
     return (
       <div className="full-error-screen">
