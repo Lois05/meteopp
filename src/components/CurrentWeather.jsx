@@ -2,15 +2,16 @@ import React from "react";
 import "../styles/currentweather.css";
 
 const CurrentWeather = ({ data, loading, bg }) => {
+  // État de chargement (Skeleton avec les 3 points pulsants)
   if (loading) {
     return (
-      <div className="current-weather loading-state">
-        <div className="current-content-wrapper centered-loader">
-          <div className="loader-dots">
-            <span></span><span></span><span></span>
-          </div>
-          <p className="loading-text">Loading...</p>
+      <div className="current-weather current-loading-container">
+        <div className="loading-dots">
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
+        <p className="loading-text">Loading...</p>
       </div>
     );
   }
@@ -28,7 +29,10 @@ const CurrentWeather = ({ data, loading, bg }) => {
           </div>
           <p className="full-date">
             {new Date().toLocaleDateString("en-US", {
-              weekday: 'long', month: 'short', day: 'numeric', year: 'numeric'
+              weekday: 'long',
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric'
             })}
           </p>
         </div>

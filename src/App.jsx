@@ -26,7 +26,6 @@ import storm from "./assets/images/icon-storm.webp";
 const convertValue = (value, type, unitSystem) => {
   if (value === null || value === undefined) return 0;
   if (unitSystem === "Metric") return Math.round(value);
-  
   if (type === "temp") return Math.round((value * 9) / 5 + 32);
   if (type === "wind") return Math.round(value / 1.609); 
   if (type === "precip") return (value / 25.4).toFixed(1); 
@@ -53,24 +52,18 @@ function App() {
   const [unitSystem, setUnitSystem] = useState("Metric"); 
   
   const initialFetchDone = useRef(false);
-  // RÉFÉRENCE pour le menu dropdown
   const dropdownRef = useRef(null);
 
-  // LOGIQUE POUR FERMER AU CLIC EXTÉRIEUR
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
       }
     };
-
     if (isDropdownOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isDropdownOpen]);
 
   const fetchWeather = useCallback(async (city) => {
@@ -91,10 +84,7 @@ function App() {
       const data = await weatherRes.json();
 
       if (data && data.current) {
-        setWeatherData({
-          city: name, country,
-          raw: data 
-        });
+        setWeatherData({ city: name, country, raw: data });
       }
     } catch (e) {
       console.error(e);
@@ -143,51 +133,26 @@ function App() {
       <header className="app-header">
         <div className="header-content">
           <img src={logo} alt="Logo" className="logo" />
-          
-          {/* AJOUT DE LA REF ICI */}
           <div className="units-dropdown-container" ref={dropdownRef}>
-            <button 
-              className={`settings-btn ${isDropdownOpen ? "active" : ""}`} 
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
+            <button className={`settings-btn ${isDropdownOpen ? "active" : ""}`} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
               <img src={unitsIcon} alt="" /> Units <img src={dropdownIcon} className={isDropdownOpen ? "open" : ""} alt="" />
             </button>
-            
             {isDropdownOpen && (
               <div className="dropdown-menu">
                 <div className="dropdown-label" onClick={() => setUnitSystem(unitSystem === "Metric" ? "Imperial" : "Metric")}>
                   Switch to {unitSystem === "Metric" ? "Imperial" : "Metric"}
                 </div>
-                
-                <div className="dropdown-section">
-                  <p>Temperature</p>
-                  <div className={`dropdown-item ${unitSystem === "Metric" ? "selected" : ""}`} onClick={() => { setUnitSystem("Metric"); setIsDropdownOpen(false); }}>
-                    Celsius (°C) {unitSystem === "Metric" && <img src={checkmarkIcon} alt="" />}
+                {["Temperature", "Wind Speed", "Precipitation"].map((title, idx) => (
+                  <div className="dropdown-section" key={idx}>
+                    <p>{title}</p>
+                    <div className={`dropdown-item ${unitSystem === "Metric" ? "selected" : ""}`} onClick={() => { setUnitSystem("Metric"); setIsDropdownOpen(false); }}>
+                      {idx === 0 ? "Celsius (°C)" : idx === 1 ? "km/h" : "Millimeters (mm)"} {unitSystem === "Metric" && <img src={checkmarkIcon} alt="" />}
+                    </div>
+                    <div className={`dropdown-item ${unitSystem === "Imperial" ? "selected" : ""}`} onClick={() => { setUnitSystem("Imperial"); setIsDropdownOpen(false); }}>
+                      {idx === 0 ? "Fahrenheit (°F)" : idx === 1 ? "mph" : "Inches (in)"} {unitSystem === "Imperial" && <img src={checkmarkIcon} alt="" />}
+                    </div>
                   </div>
-                  <div className={`dropdown-item ${unitSystem === "Imperial" ? "selected" : ""}`} onClick={() => { setUnitSystem("Imperial"); setIsDropdownOpen(false); }}>
-                    Fahrenheit (°F) {unitSystem === "Imperial" && <img src={checkmarkIcon} alt="" />}
-                  </div>
-                </div>
-
-                <div className="dropdown-section">
-                  <p>Wind Speed</p>
-                  <div className={`dropdown-item ${unitSystem === "Metric" ? "selected" : ""}`} onClick={() => { setUnitSystem("Metric"); setIsDropdownOpen(false); }}>
-                    km/h {unitSystem === "Metric" && <img src={checkmarkIcon} alt="" />}
-                  </div>
-                  <div className={`dropdown-item ${unitSystem === "Imperial" ? "selected" : ""}`} onClick={() => { setUnitSystem("Imperial"); setIsDropdownOpen(false); }}>
-                    mph {unitSystem === "Imperial" && <img src={checkmarkIcon} alt="" />}
-                  </div>
-                </div>
-
-                <div className="dropdown-section">
-                  <p>Precipitation</p>
-                  <div className={`dropdown-item ${unitSystem === "Metric" ? "selected" : ""}`} onClick={() => { setUnitSystem("Metric"); setIsDropdownOpen(false); }}>
-                    Millimeters (mm) {unitSystem === "Metric" && <img src={checkmarkIcon} alt="" />}
-                  </div>
-                  <div className={`dropdown-item ${unitSystem === "Imperial" ? "selected" : ""}`} onClick={() => { setUnitSystem("Imperial"); setIsDropdownOpen(false); }}>
-                    Inches (in) {unitSystem === "Imperial" && <img src={checkmarkIcon} alt="" />}
-                  </div>
-                </div>
+                ))}
               </div>
             )}
           </div>
@@ -196,22 +161,37 @@ function App() {
 
       <SearchBar handleSearch={fetchWeather} />
       
-      <main className="main-content" key={weatherData?.city}>
+      <main className="main-content">
         <div className="main-left">
-          <CurrentWeather data={finalData} loading={isLoading} bg={bgImage} unit={unitSystem === "Metric" ? "°" : "°"} />
+          <CurrentWeather 
+            data={finalData} 
+            loading={isLoading} 
+            bg={bgImage} 
+            unit="°" 
+          />
           <WeatherDetails 
             data={finalData?.current} 
             loading={isLoading} 
             units={{
-              temp: unitSystem === "Metric" ? "°" : "°",
+              temp: "°",
               wind: unitSystem === "Metric" ? "km/h" : "mph",
               precip: unitSystem === "Metric" ? "mm" : "in"
             }} 
           />
-          <DailyForecast days={finalData?.days} activeIndex={selectedDayIndex} onSelect={setSelectedDayIndex} loading={isLoading} />
+          <DailyForecast 
+            days={finalData?.days} 
+            activeIndex={selectedDayIndex} 
+            onSelect={setSelectedDayIndex} 
+            loading={isLoading} 
+          />
         </div>
         <aside className="sidebar">
-          <SideBar days={finalData?.days} selectedIndex={selectedDayIndex} setSelectedIndex={setSelectedDayIndex} loading={isLoading} />
+          <SideBar 
+            days={finalData?.days} 
+            selectedIndex={selectedDayIndex} 
+            setSelectedIndex={setSelectedDayIndex} 
+            loading={isLoading} 
+          />
         </aside>
       </main>
     </div>

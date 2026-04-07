@@ -16,12 +16,11 @@ const SideBar = ({ days, selectedIndex, setSelectedIndex, loading }) => {
 
   const currentDay = days ? days[selectedIndex] : null;
   
-  // Sécurité : On essaie de prendre de 15h à 22h (3pm-10pm)
+  // Filtrage des heures (ex: 15h à 22h)
   let hoursToShow = currentDay 
     ? (currentDay.hourly || []).filter(h => h.rawIndex >= 15 && h.rawIndex <= 22) 
     : [];
 
-  // Si le filtre est vide (problème d'index), on prend les 8 premières heures par défaut
   if (currentDay && hoursToShow.length === 0) {
     hoursToShow = currentDay.hourly.slice(0, 8);
   }
@@ -32,7 +31,8 @@ const SideBar = ({ days, selectedIndex, setSelectedIndex, loading }) => {
         <div className="text">Hourly forecast</div>
         <div className="dropdown">
           <div className="dropdown-btn" onClick={() => !loading && setShowDropdown(!showDropdown)}>
-            {loading ? "--" : currentDay?.shortDay} 
+            {/* On affiche un vide ou un placeholder discret pendant le loading */}
+            {loading ? "" : currentDay?.shortDay} 
             <img src={dropdownIcon} className={showDropdown ? "icon up" : "icon"} alt="" />
           </div>
           {showDropdown && !loading && (
@@ -50,14 +50,14 @@ const SideBar = ({ days, selectedIndex, setSelectedIndex, loading }) => {
 
       <div className="all-cards">
         {loading ? (
-          /* Squelettes de chargement */
+          /* Squelettes de chargement : Cartes vides sans aucun texte ni tiret */
           [...Array(8)].map((_, i) => (
             <div key={i} className="hour-card skeleton-card">
               <div className="left-info">
                 <div className="skeleton-circle"></div>
-                <div className="time">--</div>
+                <div className="time"></div> {/* Vide pour le skeleton */}
               </div>
-              <div className="temperature">--</div>
+              <div className="temperature"></div> {/* Vide pour le skeleton */}
             </div>
           ))
         ) : (
