@@ -14,46 +14,29 @@ const SideBar = ({ days, selectedIndex, setSelectedIndex, loading }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  if (loading || !days || days.length === 0 || !days[selectedIndex]) {
-    return (
-      <div className="side-bar skeleton-state">
-        <div className="top"><div className="text">Hourly forecast</div></div>
-        <div className="all-cards">
-          {[...Array(8)].map((_, i) => <div key={i} className="hour-card skeleton-card"></div>)}
-        </div>
-      </div>
-    );
+  const currentDay = days ? days[selectedIndex] : null;
+  
+  // Sécurité : On essaie de prendre de 15h à 22h (3pm-10pm)
+  let hoursToShow = currentDay 
+    ? (currentDay.hourly || []).filter(h => h.rawIndex >= 15 && h.rawIndex <= 22) 
+    : [];
+
+  // Si le filtre est vide (problème d'index), on prend les 8 premières heures par défaut
+  if (currentDay && hoursToShow.length === 0) {
+    hoursToShow = currentDay.hourly.slice(0, 8);
   }
-
-  const currentDay = days[selectedIndex];
-
-  // --- FILTRAGE : Uniquement de 3 PM à 10 PM ---
-  const hoursToShow = (currentDay.hourly || []).filter((hour) => {
-    // On extrait le chiffre (ex: "3" de "3 PM") et le suffixe ("PM")
-    const match = hour.time.match(/(\d+)\s*(AM|PM)/i);
-    if (!match) return false;
-
-    const val = parseInt(match[1]);
-    const isPM = match[2].toUpperCase() === "PM";
-
-    // Logique : Doit être PM ET entre 3 et 10 (on exclut 12 PM qui est midi)
-    if (isPM) {
-      if (val === 12) return false; // Exclure midi
-      return val >= 3 && val <= 10;
-    }
-    return false;
-  });
 
   return (
     <div className="side-bar" ref={sideRef}>
       <div className="top">
         <div className="text">Hourly forecast</div>
         <div className="dropdown">
-          <div className="dropdown-btn" onClick={() => setShowDropdown(!showDropdown)}>
-            {currentDay.shortDay} <img src={dropdownIcon} className="icon" alt="" />
+          <div className="dropdown-btn" onClick={() => !loading && setShowDropdown(!showDropdown)}>
+            {loading ? "--" : currentDay?.shortDay} 
+            <img src={dropdownIcon} className={showDropdown ? "icon up" : "icon"} alt="" />
           </div>
-          {showDropdown && (
-            <div className="dropdown-menu">
+          {showDropdown && !loading && (
+            <div className="sidebar-dropdown-menu">
               {days.map((day, i) => (
                 <div key={i} className={`item ${i === selectedIndex ? "active" : ""}`} 
                      onClick={() => { setSelectedIndex(i); setShowDropdown(false); }}>
@@ -64,21 +47,29 @@ const SideBar = ({ days, selectedIndex, setSelectedIndex, loading }) => {
           )}
         </div>
       </div>
+
       <div className="all-cards">
-        {hoursToShow.length > 0 ? (
+        {loading ? (
+          /* Squelettes de chargement */
+          [...Array(8)].map((_, i) => (
+            <div key={i} className="hour-card skeleton-card">
+              <div className="left-info">
+                <div className="skeleton-circle"></div>
+                <div className="time">--</div>
+              </div>
+              <div className="temperature">--</div>
+            </div>
+          ))
+        ) : (
           hoursToShow.map((hour, i) => (
             <div className="hour-card" key={i}>
               <div className="left-info">
                 <img src={hour.icon} className="weather-icon" alt="" />
                 <div className="time">{hour.time}</div>
               </div>
-              <div className="temperature">
-                {Math.round(hour.temp)}°
-              </div>
+              <div className="temperature">{Math.round(hour.temp)}°</div>
             </div>
           ))
-        ) : (
-          <p style={{textAlign: 'center', opacity: 0.5, marginTop: '20px'}}>No data for this range</p>
         )}
       </div>
     </div>

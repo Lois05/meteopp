@@ -4,116 +4,138 @@
   flex-direction: column;
   padding: 24px;
   background-color: #1a1b2e; 
-  border-radius: 20px;
-  width: 100%; /* Ajusté à 100% pour le parent sidebar */
-  height: 675px;
+  border-radius: 16px;
+  width: 100%;
+  height: 100%;
   box-sizing: border-box;
 }
 
 /* --- LIGNE DU HAUT --- */
-.top {
+.side-bar .top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
-.text { 
+.side-bar .text { 
   font-size: 16px; 
-  font-weight: 500; 
+  font-weight: 700; 
   color: #ffffff; 
 }
 
-/* --- DROPDOWN --- */
-.dropdown { position: relative; }
+/* --- DROPDOWN (FLOTTANT) --- */
+.side-bar .dropdown { 
+  position: relative; 
+}
 
-.dropdown-btn {
-  background: #2b2d42;
-  padding: 8px 14px;
+.side-bar .dropdown-btn {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 8px 12px;
   border-radius: 10px;
   font-size: 13px;
   color: #ffffff;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  gap: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
   transition: 0.2s;
 }
 
-.dropdown-btn:hover { background: #363954; }
+.side-bar .dropdown-btn img.icon {
+  width: 12px;
+  opacity: 0.8;
+  transition: transform 0.3s ease;
+}
 
-.dropdown-menu {
+.side-bar .dropdown-btn img.icon.up {
+  transform: rotate(180deg);
+}
+
+
+.side-bar .sidebar-dropdown-menu {
   position: absolute;
-  top: 110%;
+  top: calc(100% + 8px);
   right: 0;
-  z-index: 100;
+  z-index: 1000; 
   width: 160px;
   background: #2b2d42;
   border-radius: 12px;
   padding: 8px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-  border: 1px solid rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
 }
 
-.item { 
-  padding: 10px; 
+.side-bar .sidebar-dropdown-menu .item { 
+  padding: 10px 12px; 
   font-size: 13px; 
   color: #a0a0c0; 
   cursor: pointer; 
   border-radius: 8px; 
 }
-.item:hover, .item.active { 
+
+.side-bar .sidebar-dropdown-menu .item:hover, 
+.side-bar .sidebar-dropdown-menu .item.active { 
   background: rgba(255, 255, 255, 0.1); 
   color: #fff; 
 }
 
 /* --- LISTE DES CARTES --- */
-.all-cards {
+.side-bar .all-cards {
   display: flex;
   flex-direction: column;
-  gap: 12px; 
+  gap: 15px; 
   flex: 1;
-  overflow-y: auto;
-  scrollbar-width: none; /* Masquer scrollbar Firefox */
 }
-.all-cards::-webkit-scrollbar { display: none; } /* Masquer scrollbar Chrome/Safari *
 
-/* --- HOUR CARD --- */
-.hour-card {
-  background-color: #2b2d42; 
+/* --- HOUR CARD  --- */
+.side-bar .hour-card {
+  background-color: rgba(255, 255, 255, 0.03); 
   border-radius: 16px;
-  padding: 0 20px;
+  padding: 12px 20px;
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-height: 60px; 
-  flex-shrink: 0;
-  border: 1px solid rgba(255, 255, 255, 0.02);
+  min-height: 60px;
+  border: 1px solid transparent;
+  transition: background 0.2s;
 }
 
-.left-info { 
+.side-bar .hour-card:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.side-bar .left-info { 
   display: flex; 
   align-items: center; 
-  gap: 15px; 
+  gap: 16px; 
 }
 
-.hour-card .weather-icon {
-  width: 40px; 
-  height: 40px;
+.side-bar .weather-icon {
+  width: 32px; 
+  height: 32px;
   object-fit: contain;
 }
 
-.time { font-size: 14px; font-weight: 500; }
-.temperature { font-size: 18px; font-weight: 700; }
+.side-bar .time { 
+  font-size: 14px; 
+  font-weight: 500; 
+  color: #ffffff;
+}
 
-/* --- SKELETON STATE --- */
+.side-bar .temperature { 
+  font-size: 16px; 
+  font-weight: 700; 
+}
+
+/* --- SKELETON ANIMATION --- */
 .skeleton-card {
-  background: linear-gradient(90deg, #222338 25%, #2b2d42 50%, #222338 75%);
+  opacity: 0.3;
+  background: linear-gradient(90deg, #1a1b2e 25%, #2b2d42 50%, #1a1b2e 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
-  border: none;
 }
 
 @keyframes shimmer {
