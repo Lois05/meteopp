@@ -16,12 +16,11 @@ const SideBar = ({ days, selectedIndex, setSelectedIndex, loading }) => {
 
   const currentDay = days ? days[selectedIndex] : null;
   
-  // Filtrage des heures (ex: 15h à 22h)
   let hoursToShow = currentDay 
     ? (currentDay.hourly || []).filter(h => h.rawIndex >= 15 && h.rawIndex <= 22) 
     : [];
 
-  if (currentDay && hoursToShow.length === 0) {
+  if (currentDay && hoursToShow.length === 0 && currentDay.hourly) {
     hoursToShow = currentDay.hourly.slice(0, 8);
   }
 
@@ -31,14 +30,14 @@ const SideBar = ({ days, selectedIndex, setSelectedIndex, loading }) => {
         <div className="text">Hourly forecast</div>
         <div className="dropdown">
           <div className="dropdown-btn" onClick={() => !loading && setShowDropdown(!showDropdown)}>
-            {/* On affiche un vide ou un placeholder discret pendant le loading */}
-            {loading ? "" : currentDay?.shortDay} 
+            {/* On évite de laisser un nœud texte vide orphelin */}
+            <span>{loading ? "" : currentDay?.shortDay}</span>
             <img src={dropdownIcon} className={showDropdown ? "icon up" : "icon"} alt="" />
           </div>
-          {showDropdown && !loading && (
+          {showDropdown && !loading && days && (
             <div className="sidebar-dropdown-menu">
               {days.map((day, i) => (
-                <div key={i} className={`item ${i === selectedIndex ? "active" : ""}`} 
+                <div key={`day-${i}`} className={`item ${i === selectedIndex ? "active" : ""}`} 
                      onClick={() => { setSelectedIndex(i); setShowDropdown(false); }}>
                   {day.dayName}
                 </div>
@@ -50,19 +49,18 @@ const SideBar = ({ days, selectedIndex, setSelectedIndex, loading }) => {
 
       <div className="all-cards">
         {loading ? (
-          /* Squelettes de chargement : Cartes vides sans aucun texte ni tiret */
           [...Array(8)].map((_, i) => (
-            <div key={i} className="hour-card skeleton-card">
+            <div key={`skel-card-${i}`} className="hour-card skeleton-card">
               <div className="left-info">
                 <div className="skeleton-circle"></div>
-                <div className="time"></div> {/* Vide pour le skeleton */}
+                <div className="time"></div>
               </div>
-              <div className="temperature"></div> {/* Vide pour le skeleton */}
+              <div className="temperature"></div>
             </div>
           ))
         ) : (
           hoursToShow.map((hour, i) => (
-            <div className="hour-card" key={i}>
+            <div className="hour-card" key={`real-hour-${i}-${hour.time}`}>
               <div className="left-info">
                 <img src={hour.icon} className="weather-icon" alt="" />
                 <div className="time">{hour.time}</div>
