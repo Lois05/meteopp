@@ -2,7 +2,7 @@ import React from "react";
 import "../styles/weatherdetails.css";
 
 const WeatherDetails = ({ data, units, loading }) => {
-  const displayValue = (value, suffix = "") => {
+  const displayValue = (value, suffix = "") => { 
     if (loading || value === undefined || value === null) return "--";
     return `${Math.round(value)}${suffix}`;
   };
@@ -11,7 +11,7 @@ const WeatherDetails = ({ data, units, loading }) => {
     <div className="weather-details">
       <div className="detail-card">
         <div className="card-title">Feels like</div>
-        <div className="card-value">{displayValue(data?.feelsLike, "°")}</div>
+        <div className="card-value">{displayValue(data?.feelsLike, "°")}</div> 
       </div>
       <div className="detail-card">
         <div className="card-title">Humidity</div>

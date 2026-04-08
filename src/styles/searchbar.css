@@ -23,7 +23,7 @@
   gap: 12px;
   width: 100%;
   max-width: 550px;
-  position: relative; /* Important pour que les suggestions se placent par rapport à lui */
+  position: relative; 
 }
 
 /* Wrapper pour l’input */
@@ -35,11 +35,11 @@
 /* Input */
 .search-input {
   width: 100%;
-  padding: 15px 15px 15px 50px; /* Plus d'espace pour l'icône */
+  padding: 15px 15px 15px 50px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   font-size: 16px;
-  background-color: #1a1b2e; /* Harmonisé avec ton thème sombre */
+  background-color: #1a1b2e; 
   color: white;
   outline: none;
   transition: border-color 0.2s;
@@ -49,11 +49,6 @@
   border-color: hsl(246, 81%, 61%);
 }
 
-.search-input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
-}
-
-/* Icône dans l’input */
 .search-icon {
   position: absolute;
   left: 18px;
@@ -77,17 +72,36 @@
   font-weight: 600;
   transition: all 0.2s ease;
   flex-shrink: 0;
+  height: 50px; /* Aligné sur la hauteur de l'input */
 }
 
-.search-button:hover {
-  background-color: hsl(233, 79%, 45%);
-  transform: translateY(-1px);
+/* --- RESPONSIVE MOBILE --- */
+@media (max-width: 768px) {
+  .first-texte {
+    font-size: 32px; /* Plus petit pour mobile */
+  }
+
+  .search-bar {
+    flex-direction: column; /* Empile l'input et le bouton */
+    align-items: stretch; /* Prend toute la largeur */
+    gap: 16px;
+  }
+
+  .input-wrapper {
+    width: 100%;
+  }
+
+  .search-button {
+    width: 100%; /* Bouton prend toute la largeur */
+    margin-left: 0;
+    height: 54px; /* Un peu plus épais pour le confort tactile */
+  }
 }
 
-/* --- LISTE DES SUGGESTIONS (AJOUTÉ) --- */
+/* --- LISTE DES SUGGESTIONS --- */
 .suggestions-list {
   position: absolute;
-  top: calc(100% + 8px); /* Apparaît juste en dessous de l'input */
+  top: calc(100% + 8px);
   left: 0;
   width: 100%;
   background: #1a1b2e;
@@ -96,7 +110,7 @@
   list-style: none;
   padding: 8px;
   margin: 0;
-  z-index: 1000; /* Passe au-dessus de tout */
+  z-index: 1000;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);
 }
@@ -107,29 +121,8 @@
   cursor: pointer;
   color: white;
   font-size: 14px;
-  display: flex;
-  align-items: center;
-  transition: background 0.2s;
 }
 
 .suggestions-list li:hover {
   background: rgba(255, 255, 255, 0.05);
-}
-
-.suggestions-list .city-name {
-  font-weight: 600;
-}
-
-.suggestions-list .country-name {
-  opacity: 0.5;
-  margin-left: 4px;
-}
-
-/* État "Search in progress" */
-.loading-state {
-  padding: 15px;
-  text-align: center;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.6);
-  font-style: italic;
 }

@@ -8,14 +8,14 @@
 }
 
 .detail-card {
-  background: rgba(255, 255, 255, 0.08); /* Plus subtil comme sur la photo */
-  padding: 20px 15px; /* Plus de padding vertical pour plus de hauteur */
-  border-radius: 16px; /* Arrondi plus doux pour matcher le design */
+  background: rgba(255, 255, 255, 0.08); 
+  padding: 20px 15px; 
+  border-radius: 16px; 
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start; /* Aligné à gauche comme sur tes photos */
+  align-items: flex-start; 
   color: #fff;
   gap: 12px; /* Plus d'espace entre le titre et la valeur */
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -39,21 +39,21 @@
   font-weight: 400;
 }
 
-/* --- 🧊 STYLE SKELETON --- */
+/* --- STYLE SKELETON --- */
 .weather-details.skeleton-state .detail-card.skeleton-card {
   background-color: #1a1b2e !important;
   border: none;
 }
 
 /* =============================================
-   ÉTAT MOBILE (PHOTO 2 : GRILLE 2x2)
+   ÉTAT MOBILE 
    ============================================= */
 @media (max-width: 768px) {
   .weather-details {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* PHOTO: 2 colonnes x 2 lignes */
+    grid-template-columns: repeat(2, 1fr);
     gap: 15px;
-    height: auto; /* La hauteur s'adapte au contenu */
+    height: auto; 
   }
 
   .detail-card {

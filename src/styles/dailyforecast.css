@@ -11,7 +11,7 @@
   opacity: 0.9;
 }
 
-/* --- ÉTAT PC (PHOTO 1) --- */
+
 .daily-forecast {
   display: flex;
   justify-content: space-between; /* Aligne les 7 jours sur une ligne */
@@ -69,12 +69,12 @@
 }
 
 /* =============================================
-   ÉTAT MOBILE (PHOTO 2 : GRILLE 3 COLONNES)
+   ÉTAT MOBILE
    ============================================= */
 @media (max-width: 768px) {
   .daily-forecast {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 colonnes comme sur la photo */
+    grid-template-columns: repeat(3, 1fr); 
     gap: 10px;
   }
 

@@ -134,8 +134,17 @@ function App() {
         <div className="header-content">
           <img src={logo} alt="Logo" className="logo" />
           <div className="units-dropdown-container" ref={dropdownRef}>
-            <button className={`settings-btn ${isDropdownOpen ? "active" : ""}`} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-              <img src={unitsIcon} alt="" /> Units <img src={dropdownIcon} className={isDropdownOpen ? "open" : ""} alt="" />
+            <button 
+              className={`settings-btn ${isDropdownOpen ? "active" : ""}`} 
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+              <img src={unitsIcon} alt="" /> 
+              <span>Units</span> 
+              <img 
+                src={dropdownIcon} 
+                className={`dropdown-arrow-icon ${isDropdownOpen ? "open" : ""}`} 
+                alt="" 
+              />
             </button>
             {isDropdownOpen && (
               <div className="dropdown-menu">
@@ -145,11 +154,19 @@ function App() {
                 {["Temperature", "Wind Speed", "Precipitation"].map((title, idx) => (
                   <div className="dropdown-section" key={idx}>
                     <p>{title}</p>
-                    <div className={`dropdown-item ${unitSystem === "Metric" ? "selected" : ""}`} onClick={() => { setUnitSystem("Metric"); setIsDropdownOpen(false); }}>
-                      {idx === 0 ? "Celsius (°C)" : idx === 1 ? "km/h" : "Millimeters (mm)"} {unitSystem === "Metric" && <img src={checkmarkIcon} alt="" />}
+                    <div 
+                      className={`dropdown-item ${unitSystem === "Metric" ? "selected" : ""}`} 
+                      onClick={() => { setUnitSystem("Metric"); setIsDropdownOpen(false); }}
+                    >
+                      {idx === 0 ? "Celsius (°C)" : idx === 1 ? "km/h" : "Millimeters (mm)"} 
+                      {unitSystem === "Metric" && <img src={checkmarkIcon} alt="" className="checkmark" />}
                     </div>
-                    <div className={`dropdown-item ${unitSystem === "Imperial" ? "selected" : ""}`} onClick={() => { setUnitSystem("Imperial"); setIsDropdownOpen(false); }}>
-                      {idx === 0 ? "Fahrenheit (°F)" : idx === 1 ? "mph" : "Inches (in)"} {unitSystem === "Imperial" && <img src={checkmarkIcon} alt="" />}
+                    <div 
+                      className={`dropdown-item ${unitSystem === "Imperial" ? "selected" : ""}`} 
+                      onClick={() => { setUnitSystem("Imperial"); setIsDropdownOpen(false); }}
+                    >
+                      {idx === 0 ? "Fahrenheit (°F)" : idx === 1 ? "mph" : "Inches (in)"} 
+                      {unitSystem === "Imperial" && <img src={checkmarkIcon} alt="" className="checkmark" />}
                     </div>
                   </div>
                 ))}
@@ -163,12 +180,7 @@ function App() {
       
       <main className="main-content">
         <div className="main-left">
-          <CurrentWeather 
-            data={finalData} 
-            loading={isLoading} 
-            bg={bgImage} 
-            unit="°" 
-          />
+          <CurrentWeather data={finalData} loading={isLoading} bg={bgImage} unit="°" />
           <WeatherDetails 
             data={finalData?.current} 
             loading={isLoading} 
@@ -178,18 +190,16 @@ function App() {
               precip: unitSystem === "Metric" ? "mm" : "in"
             }} 
           />
-          <DailyForecast 
-            days={finalData?.days} 
-            activeIndex={selectedDayIndex} 
-            onSelect={setSelectedDayIndex} 
-            loading={isLoading} 
-          />
+          <DailyForecast days={finalData?.days} activeIndex={selectedDayIndex} onSelect={setSelectedDayIndex} loading={isLoading} />
         </div>
         <aside className="sidebar">
           <SideBar 
             days={finalData?.days} 
             selectedIndex={selectedDayIndex} 
-            setSelectedIndex={setSelectedDayIndex} 
+            setSelectedIndex={(idx) => {
+              setSelectedDayIndex(idx);
+              setIsDropdownOpen(false); // Ferme les menus si besoin au clic
+            }} 
             loading={isLoading} 
           />
         </aside>
