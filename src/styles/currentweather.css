@@ -1,3 +1,6 @@
+/* =============================================
+   1. CONTENEUR PRINCIPAL (CARTE)
+   ============================================= */
 .current-weather {
   width: 100%;
   height: 280px;
@@ -9,27 +12,82 @@
   position: relative;
   overflow: hidden;
   display: flex;
-  align-items: center; /* Centre verticalement le contenu global */
+  align-items: center; /* Centre verticalement le contenu */
+  transition: all 0.3s ease;
 }
 
+/* Overlay sombre pour la lisibilité du texte */
 .current-weather::before {
   content: "";
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: linear-gradient(90deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%);
+  background: linear-gradient(90deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 100%);
   z-index: 0;
 }
 
+/* Wrapper interne */
 .current-content-wrapper {
   position: relative;
   z-index: 1;
   width: 100%;
   display: flex;
-  justify-content: space-between; /* Écarte les éléments sur PC */
   align-items: center;
 }
 
-/* --- TEXTE GAUCHE (PC) --- */
+/* État : Quand on a les données (PC) */
+.current-weather:not(.current-loading-container) .current-content-wrapper {
+  justify-content: space-between;
+}
+
+/* État : Quand on est en chargement */
+.current-loading-container .current-content-wrapper {
+  justify-content: center; /* Centre horizontalement le loader */
+}
+
+/* =============================================
+   2. STYLE DU LOADER (CENTRÉ)
+   ============================================= */
+.centered-loader-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+}
+
+.loading-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.loading-dots span {
+  width: 12px;
+  height: 12px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  display: inline-block;
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+.loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1.0); }
+}
+
+.loading-text {
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+/* =============================================
+   3. INFOS MÉTÉO (QUAND CHARGÉ)
+   ============================================= */
 .location-info {
   text-align: left;
 }
@@ -47,7 +105,6 @@
   margin-top: 8px;
 }
 
-/* --- TEMP DROITE (PC) --- */
 .weather-main-display {
   display: flex;
   align-items: center;
@@ -66,27 +123,27 @@
 }
 
 /* =============================================
-   MOBILE DESIGN (MATCH PHOTO 2)
+   4. RESPONSIVE MOBILE
    ============================================= */
 @media (max-width: 768px) {
   .current-weather {
     height: 320px;
-    padding: 20px;
+    padding: 24px;
     justify-content: center;
   }
 
   .current-weather::before {
-    background: rgba(0, 0, 0, 0.3); /* Overlay plus uniforme sur mobile */
+    background: rgba(0, 0, 0, 0.3);
   }
 
   .current-content-wrapper {
-    flex-direction: column; /* Empile les éléments */
-    justify-content: center;
-    gap: 30px;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 20px;
   }
 
   .location-info {
-    text-align: center; /* Centre le texte comme sur la Photo 2 */
+    text-align: center;
   }
 
   .city-country-wrapper {
@@ -95,7 +152,7 @@
   }
 
   .weather-main-display {
-    flex-direction: row; /* Icône et Temp restent côte à côte */
+    flex-direction: row;
     justify-content: center;
   }
 
@@ -104,7 +161,7 @@
   }
 
   .weather-icon {
-    width: 70px;
-    height: 70px;
+    width: 80px;
+    height: 80px;
   }
 }
